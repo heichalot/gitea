@@ -1,6 +1,19 @@
 .repository {
-  .commit-statuses .list > .item {
-    line-height: 2;
+  .popup.commit-statuses {
+    // we had better limit the max size of the popup, and add scroll bars if the content size is too large.
+    // otherwise some part of the popup will be hidden by viewport boundary
+    max-height: 45vh;
+    max-width: 60vw;
+    overflow: auto;
+    padding: 0;
+
+    .list {
+      padding: .8em; // to make the scrollbar align to the border, we move the padding from outer `.popup` to this inside `.list`
+
+      > .item {
+        line-height: 2;
+      }
+    }
   }
 
   .repo-header {
@@ -686,6 +699,15 @@
       code {
         color: var(--color-primary);
       }
+      a[data-clipboard-text] {
+        cursor: pointer;
+        svg {
+          vertical-align: middle;
+          position: relative;
+          top: -2px;
+          right: 1px;
+        }
+      }
     }
 
     .pull {
@@ -815,6 +837,7 @@
           width: 20px;
           height: 20px;
           margin: 0 .25rem;
+          vertical-align: middle;
         }
 
         &:first-child:not(.commit) {
@@ -1502,6 +1525,12 @@
     th.removed,
     tr.removed {
       background-color: var(--color-diff-removed-row-bg) !important;
+    }
+
+    td.moved,
+    th.moved,
+    tr.moved {
+      background-color: var(--color-diff-moved-row-bg) !important;
     }
 
     tbody.section {
@@ -2261,6 +2290,7 @@
     .list {
       width: 100%;
       display: flex;
+      align-items: center;
 
       .item {
         width: 100%;
@@ -2268,10 +2298,12 @@
 
         &:first-of-type {
           border-radius: var(--border-radius) 0 0 var(--border-radius);
+          padding-left: .25rem;
         }
 
         &:last-of-type {
           border-radius: 0 var(--border-radius) var(--border-radius) 0;
+          padding-right: .25rem;
         }
 
         a {
@@ -2407,6 +2439,10 @@
       width: 100%;
       border-radius: 0;
       user-select: none;
+
+      @media @mediaSm {
+        display: none;
+      }
 
       .bar {
         white-space: nowrap;
@@ -2769,6 +2805,7 @@
 .labels-list .label {
   margin: 2px 0;
   display: inline-block !important;
+  line-height: 1.3em; // there is a `font-size: 1.25em` for inside emoji, so here the line-height needs to be larger slightly
 }
 
 tbody.commit-list {
@@ -3099,6 +3136,10 @@ td.blob-excerpt {
 .repository-summary-language-stats {
   height: 48px;
   overflow: hidden;
+
+  @media @mediaSm {
+    height: auto;
+  }
 }
 
 .ui.form .right .ui.button {
